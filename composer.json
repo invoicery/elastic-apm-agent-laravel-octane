@@ -1,5 +1,5 @@
 {
-    "name": "cego/elastic-apm-agent-laravel-octane",
+    "name": "invoicery/elastic-apm-agent-laravel-octane",
     "description": "Links APM transactions to Octane Requests and Tasks",
     "type": "library",
     "require": {
