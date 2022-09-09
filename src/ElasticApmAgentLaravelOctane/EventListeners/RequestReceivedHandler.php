@@ -33,6 +33,10 @@ class RequestReceivedHandler
      */
     private function getRouteUri(RequestReceived $event): string
     {
+        if ($event->request->method() === 'OPTIONS') {
+            return preg_replace('/[0-9]+/', '{id}', $event->request->path());
+        }
+
         /** @var Router $router */
         $router = $event->sandbox->make('router');
 
