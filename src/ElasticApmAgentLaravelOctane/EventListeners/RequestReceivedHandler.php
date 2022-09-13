@@ -33,17 +33,17 @@ class RequestReceivedHandler
      */
     private function getRouteUri(RequestReceived $event): string
     {
+        if ($event->request->method() === 'OPTIONS') {
+            // Merge OPTIONS URIs
+            return $this->getOptionsRouteUri($event->request->path());
+        }
+
         /** @var Router $router */
         $router = $event->sandbox->make('router');
 
         try {
             return $router->getRoutes()->match($event->request)->uri();
         } catch (Throwable $throwable) {
-            // Merge OPTIONS URIs without defined routes
-            if ($event->request->method() === 'OPTIONS') {
-                return $this->getOptionsRouteUri($event->request->path());
-            }
-
             // If the route does not exist, then simply return the path
             return $event->request->path();
         }
