@@ -52,6 +52,8 @@ class RequestReceivedHandler
     private function getOptionsRouteUri(string $path): string 
     {
         $path = preg_replace('/\/[0-9]+\//', '/{id}/', $path);
-        return preg_replace('/\/[0-9]+$/', '/{id}', $path);
+        $path = preg_replace('/\/[0-9]+$/', '/{id}', $path);
+        // Ignore URIs with random strings and UUIDs that are hard to merge in a consistent way
+        return mb_strlen($path) > 50 ? 'unhandled' : $path;
     }
 }
