@@ -18,10 +18,11 @@ class RequestReceivedHandler
      */
     public function handle(RequestReceived $event): void
     {
-        $manager = $event->sandbox->make(OctaneApmManager::class);
+        /** @var OctaneApmManager $manager */
+        $manager = $event->app->make(OctaneApmManager::class);
 
-        $manager->beginTransaction($event->request->method() . ' ' . $this->getRouteUri($event), 'request');
-        $manager->beginAndStoreSpan('RequestResponse', 'request');
+        $routeUri = $this->getRouteUri($event);
+        $manager->beginTransaction($event->request->method() . ' /' . $routeUri, 'request');
     }
 
     /**
@@ -42,7 +43,8 @@ class RequestReceivedHandler
         $router = $event->sandbox->make('router');
 
         try {
-            return $router->getRoutes()->match($event->request)->uri();
+            $routeUri = $router->getRoutes()->match($event->request)->uri();
+            return $routeUri === "/" ? "" : $routeUri;
         } catch (Throwable $throwable) {
             // If the route does not exist, then simply return the path
             return $event->request->path();
