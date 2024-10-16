@@ -23,6 +23,7 @@ class RequestReceivedHandler
 
         $routeUri = $this->getRouteUri($event);
 
+        $manager->enable();
         if (getenv('ELASTIC_APM_LARAVEL_OCTANE_IGNORE_OPTIONS') && $event->request->method() === 'OPTIONS') {
             $manager->disable();
         }
