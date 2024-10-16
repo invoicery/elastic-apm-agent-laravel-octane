@@ -22,6 +22,12 @@ class RequestReceivedHandler
         $manager = $event->app->make(OctaneApmManager::class);
 
         $routeUri = $this->getRouteUri($event);
+
+        // Don't care about OPTIONS requests
+        if ($event->request->method() === 'OPTIONS') {
+            return;
+        }
+
         $manager->beginTransaction($event->request->method() . ' /' . $routeUri, 'request');
     }
 
