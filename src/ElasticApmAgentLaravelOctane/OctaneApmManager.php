@@ -41,6 +41,11 @@ class OctaneApmManager
         $this->disabled = !class_exists(ElasticApm::class);
     }
 
+    public function disable(): void
+    {
+        $this->disabled = true;
+    }
+
     /**
      * Begins a new transaction.
      *

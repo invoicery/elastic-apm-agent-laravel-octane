@@ -25,7 +25,7 @@ class RequestReceivedHandler
 
         // Don't care about OPTIONS requests
         if ($event->request->method() === 'OPTIONS') {
-            return;
+            $manager->disable();
         }
 
         $manager->beginTransaction($event->request->method() . ' /' . $routeUri, 'request');
